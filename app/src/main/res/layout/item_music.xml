@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height">
+    <ImageView
+        android:id="@+id/iv_song"
+        android:layout_marginLeft="@dimen/item_music_image_left_margin"
+        android:layout_marginRight="@dimen/item_music_image_left_margin"
+        android:layout_marginTop="@dimen/item_music_image_left_margin"
+        android:layout_width="@dimen/item_music_image_height"
+        android:layout_height="@dimen/item_music_image_height" />
+    <LinearLayout
+        android:layout_marginTop="@dimen/item_music_image_left_margin"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_music_image_height">
+        <TextView
+            android:id="@+id/tv_song_name"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textSize="@dimen/song_name_size"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/song_name_height" />
+        <TextView
+            android:layout_marginLeft="@dimen/item_music_image_left_margin"
+            android:ellipsize="end"
+            android:id="@+id/tv_singer_name"
+            android:textSize="@dimen/singer_name_size"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/singer_name" />
+
+    </LinearLayout>
+
+</LinearLayout>
