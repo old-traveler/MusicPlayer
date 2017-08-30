@@ -1,6 +1,8 @@
 package com.hyc.music.view;
 
 /**
+ * 这个类就是进行RecyclerView子项分切线的绘制，有兴趣可以了解一下，看不懂也没有关系
+ * 因为你可以直接在Item的布局文件里面自己绘制线条
  * Created by 1 on 2017/2/24.
  */
 
@@ -15,9 +17,6 @@ import android.util.TypedValue;
 import android.view.View;
 
 
-/**
- * Created by moon.zhong on 2015/2/11.
- */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     /*

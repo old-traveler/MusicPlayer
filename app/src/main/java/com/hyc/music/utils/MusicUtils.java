@@ -33,26 +33,43 @@ public class MusicUtils {
      * 单曲循环
      */
     public static final int TYPE_SINGLE = 4414;
-
+    /**
+     * 播放器
+     */
     private MediaPlayer mediaPlayer;
-
+    /**
+     * 音乐工具类
+     */
     private static MusicUtils musicUtils;
-
+    /**
+     * 当前播放的歌曲数据集合
+     */
     private List<Song> songs;
-
+    /**
+     * 原始的歌曲数据集合（与上者内容相同，但是排列的顺序不同，为了实现多种播放类型而设）
+     */
     private List<Song> initialSongs;
-
+    /**
+     * 当前播放歌曲的下标
+     */
     private int currentSongPosition;
-
+    /**
+     * 播放监听
+     */
     private OnPlayListener onPlayListener;
-
+    /**
+     * 判断播放器是否处于准备阶段，如果处于准备阶段，就不会做其他操作
+     * 这样的目的是为了防止快速点击时，播放器转化不及时而奔溃
+     */
     private boolean isPrepare = false;
 
     public void setOnPlayListener(OnPlayListener onPlayListener) {
         this.onPlayListener = onPlayListener;
     }
 
+
     public void setPattern(int pattern) {
+        //如果是顺序播放并且和之前设置的一样，就不进行播放模式的转化，节省一些操作
         if (this.pattern == pattern && pattern == TYPE_ORDER) {
             return;
         }
@@ -60,6 +77,9 @@ public class MusicUtils {
         changeSongsByPattern();
     }
 
+    /**
+     * 播放监听
+     */
     public interface OnPlayListener {
         void OnPlaying(int duration);
     }
@@ -105,7 +125,7 @@ public class MusicUtils {
                         song.setSong(name);
 
                     }
-
+                    //给歌曲赋上一个位置下标，方便播放模式时的操作
                     song.setPosition(position);
                     position++;
                     list.add(song);
@@ -114,7 +134,9 @@ public class MusicUtils {
             // 释放资源
             cursor.close();
         }
+
         if (initialSongs == null) {
+            //初始化原始播放循序的数据集（也就是顺序播放时的排列方式）
             initialSongs = list;
         }
         return list;
@@ -226,7 +248,7 @@ public class MusicUtils {
         playMusic(songs.get(currentSongPosition));
 
     }
-
+    //设置播放完成后的监听，让其按照当前播放模式进行下一曲的切换
     public void setPlayCompletionListener() {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -234,7 +256,6 @@ public class MusicUtils {
                 playNext();
             }
         });
-
     }
 
     /**

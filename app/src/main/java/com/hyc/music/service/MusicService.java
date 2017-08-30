@@ -12,7 +12,7 @@ import android.util.Log;
 import com.hyc.music.utils.MusicUtils;
 
 /**
- * Created by 1 on 2017/2/25.
+ * 播放服务 Created by 1 on 2017/2/25.
  */
 
 public class MusicService extends Service {
