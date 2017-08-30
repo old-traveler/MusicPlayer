@@ -1,4 +1,4 @@
-package com.hyc.musicplayer;
+package com.hyc.music;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

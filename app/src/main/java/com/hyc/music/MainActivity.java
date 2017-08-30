@@ -1,4 +1,4 @@
-package com.hyc.musicplayer;
+package com.hyc.music;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +7,20 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import com.hyc.musicplayer.adapter.MusicAdapter;
-import com.hyc.musicplayer.service.MusicService;
-import com.hyc.musicplayer.utils.MusicUtils;
-import com.hyc.musicplayer.view.DividerItemDecoration;
+
+import com.hyc.music.adapter.MusicAdapter;
+import com.hyc.music.service.MusicService;
+import com.hyc.music.utils.MusicUtils;
+import com.hyc.music.view.DividerItemDecoration;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,13 +53,15 @@ public class MainActivity extends AppCompatActivity {
                 beginProgress(duration);
             }
         });
+
     }
 
     private void initView() {
         rv_main.setItemAnimator(new DefaultItemAnimator());
         rv_main.setLayoutManager(new LinearLayoutManager(this));
         rv_main.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        rv_main.setAdapter(new MusicAdapter(MusicUtils.getIntance().getMusicData(this),MainActivity.this));
+        rv_main.setAdapter(new MusicAdapter(MusicUtils.getIntance().getMusicData(this), MainActivity.this));
+        MusicUtils.getIntance().init(this);
     }
 
     @OnClick({R.id.btn_play, R.id.btn_previous, R.id.btn_next})
@@ -63,23 +70,23 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btn_play:
                 Intent intent = new Intent(MainActivity.this, MusicService.class);
-                intent.putExtra("style",MusicService.PLAYORPAUSE);
+                intent.putExtra("style", MusicService.PLAYORPAUSE);
                 startService(intent);
-                if(btn_play.getText().toString().equals("播放")){
+                if (btn_play.getText().toString().equals("播放")) {
                     btn_play.setText("暂停");
-                }else {
+                } else {
                     btn_play.setText("播放");
                 }
 
                 break;
             case R.id.btn_previous:
                 Intent intent1 = new Intent(MainActivity.this, MusicService.class);
-                intent1.putExtra("style",MusicService.PREVIOUSMUSIC);
+                intent1.putExtra("style", MusicService.PREVIOUSMUSIC);
                 startService(intent1);
                 break;
             case R.id.btn_next:
                 Intent intent2 = new Intent(MainActivity.this, MusicService.class);
-                intent2.putExtra("style",MusicService.PREVIOUSMUSIC);
+                intent2.putExtra("style", MusicService.NEXTMUSIC);
                 startService(intent2);
 
                 break;
@@ -92,20 +99,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void beginProgress(final int progress) {
-        Log.d("TAG","progress is "+progress);
-        if (main!=null){
-            if (main.isAlive()){
+        Log.d("TAG", "progress is " + progress);
+        if (main != null) {
+            if (main.isAlive()) {
                 main.interrupt();
             }
         }
         main = new Thread(new Runnable() {
             @Override
             public void run() {
-                float pro=0;
+                float pro = 0;
                 try {
-                    while(pro<100){
+                    while (pro < 100) {
                         Thread.sleep(1000);
-                        pro += 100.00f/(progress/1000.00f);
+                        pro += 100.00f / (progress / 1000.00f);
                         final float finalPro = pro;
                         runOnUiThread(new Runnable() {
                             @Override
@@ -123,5 +130,26 @@ public class MainActivity extends AppCompatActivity {
         main.start();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.pattern_choose, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.order:
+                MusicUtils.getIntance().setPattern(MusicUtils.TYPE_ORDER);
+                break;
+            case R.id.random:
+                MusicUtils.getIntance().setPattern(MusicUtils.TYPE_RANDOM);
+                break;
+            case R.id.single:
+                MusicUtils.getIntance().setPattern(MusicUtils.TYPE_SINGLE);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -1,4 +1,4 @@
-package com.hyc.musicplayer;
+package com.hyc.music;
 
 import org.junit.Test;
 

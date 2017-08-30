@@ -1,4 +1,4 @@
-package com.hyc.musicplayer.bean;
+package com.hyc.music.bean;
 
 /**
  * Created by 1 on 2017/2/24.
